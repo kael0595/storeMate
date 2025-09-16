@@ -1,5 +1,6 @@
 package com.example.storeMate.base.config;
 
+import com.example.storeMate.base.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
