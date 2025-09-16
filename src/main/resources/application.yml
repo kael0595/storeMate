@@ -1,1 +1,14 @@
-spring.application.name=storeMate
+spring:
+  application.name: storeMate
+  datasource:
+    url: jdbc:postgresql://localhost:5432/test
+    username: test
+    password: 1111
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+    hibernate:
+      ddl-auto: update
