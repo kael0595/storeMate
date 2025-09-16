@@ -12,3 +12,11 @@ spring:
         show_sql: true
     hibernate:
       ddl-auto: update
+springdoc:
+  packages-to-scan: com.example.storeMate
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
+  swagger-ui:
+    disable-swagger-default-url: false
+    display-request-duration: true
+    operations-sorter: alpha
