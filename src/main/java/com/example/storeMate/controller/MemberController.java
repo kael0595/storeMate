@@ -1,5 +1,7 @@
 package com.example.storeMate.controller;
 
+import com.example.storeMate.domain.dto.LoginRequestDto;
+import com.example.storeMate.domain.dto.LoginResponseDto;
 import com.example.storeMate.domain.dto.MemberDto;
 import com.example.storeMate.domain.entity.Member;
 import com.example.storeMate.service.MemberService;
@@ -23,5 +25,13 @@ public class MemberController {
         Member member = memberService.register(memberDto);
 
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequestDto) {
+
+        String token = memberService.login(loginRequestDto.getUsername(), loginRequestDto.getPassword());
+
+        return ResponseEntity.ok(new LoginResponseDto(token));
     }
 }
