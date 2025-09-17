@@ -12,6 +12,13 @@ spring:
         show_sql: true
     hibernate:
       ddl-auto: update
+jwt:
+  secret:
+    key: 109238oiwqueioqwu9812748iuhajdhyo27637ywodys863oy2ehasdou821736yhdalsdh
+  accessToken:
+    expiration: 3600000
+  refreshToken:
+    expiration: 14400000
 springdoc:
   packages-to-scan: com.example.storeMate
   default-consumes-media-type: application/json;charset=UTF-8
