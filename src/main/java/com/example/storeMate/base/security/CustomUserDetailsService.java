@@ -32,6 +32,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     private Collection<? extends GrantedAuthority> getAuthorities(Member member) {
-        return Collections.singletonList(new SimpleGrantedAuthority(member.getRole()));
+        return Collections.singletonList(new SimpleGrantedAuthority(member.getRole().getValue()));
     }
 }
