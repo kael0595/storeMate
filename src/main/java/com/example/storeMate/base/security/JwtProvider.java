@@ -3,8 +3,8 @@ package com.example.storeMate.base.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -14,17 +14,22 @@ import java.util.Date;
 @Component
 public class JwtProvider {
 
-    private final String secret = "adqoiweukasjdiweuyrksdhkjhsdfiouqweihaskdj";
+    @Value("${jwt.secret.key}")
+    private String secretKey;
 
-    private final SecretKey key = Keys.hmacShaKeyFor(secret.getBytes());
+    @Value("${jwt.access.expiration}")
+    private long access_expiration;
 
-    private final long expiration = 60 * 60L;
+    @Value("${jwt.refresh.expiration}")
+    private long refresh_expiration;
+
+    private final SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes());
 
     public String genToken(UserDetails userDetails) {
 
         Date now = new Date();
 
-        Date expiryDate = new Date(now.getTime() + expiration);
+        Date expiryDate = new Date(now.getTime() + access_expiration);
 
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
@@ -34,7 +39,6 @@ public class JwtProvider {
                 .signWith(key)
                 .compact();
     }
-
 
     public Claims getClaims(String token) {
         return Jwts.parser()
