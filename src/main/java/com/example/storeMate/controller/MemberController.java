@@ -41,6 +41,6 @@ public class MemberController {
         memberDto.setName(member.getName());
         memberDto.setRole(member.getRole().getValue());
 
-        return ResponseEntity.ok(new RsData("200", "회원정보 조회에 성공하였습니다.", memberDto));
+        return ResponseEntity.ok(new RsData<>("200", "회원정보 조회에 성공하였습니다.", memberDto));
     }
 }
