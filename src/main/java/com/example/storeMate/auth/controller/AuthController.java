@@ -36,4 +36,14 @@ public class AuthController {
 
         return ResponseEntity.ok(new RsData<>("200", "로그인에 성공하였습니다.", loginResponseDto));
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<RsData<Void>> logout(@RequestBody RefreshTokenRequestDto requestDto) {
+
+        Member member = authService.findMemberByToken(requestDto.getRefreshToken());
+
+        authService.logout(member);
+
+        return ResponseEntity.ok(new RsData<>("200", "정상적으로 로그아웃하였습니다."));
+    }
 }
