@@ -49,4 +49,18 @@ public class MemberController {
 
         return ResponseEntity.ok(new RsData<>("200", "회원정보 조회에 성공하였습니다.", memberDto));
     }
+
+    @PostMapping("/delete")
+    public ResponseEntity<RsData<Void>> deleteMember(@RequestHeader("Authorization") String authorizationHeader) {
+
+        String token = authorizationHeader.replace("Bearer ", "");
+
+        String username = jwtProvider.getUsernameFromToken(token);
+
+        Member member = memberService.findByUsername(username);
+
+        memberService.deleteMember(member);
+
+        return ResponseEntity.ok(new RsData<>("200", "회원탈퇴가 정상적으로 완료되었습니다."));
+    }
 }
