@@ -19,11 +19,17 @@ public class MemberController {
     private final JwtProvider jwtProvider;
 
     @PostMapping("/register")
-    public ResponseEntity<RsData> register(@RequestBody MemberDto memberDto) {
+    public ResponseEntity<RsData<MemberDto>> register(@RequestBody MemberDto memberDto) {
 
         Member member = memberService.register(memberDto);
 
-        return ResponseEntity.ok(new RsData("200", "회원가입이 완료되었습니다.", member));
+        MemberDto responseDto = new MemberDto();
+        responseDto.setUsername(member.getUsername());
+        responseDto.setName(member.getName());
+        responseDto.setEmail(member.getEmail());
+        responseDto.setRole(member.getRole().getValue());
+
+        return ResponseEntity.ok(new RsData<>("200", "회원가입이 완료되었습니다.", responseDto));
     }
 
     @GetMapping("/me")
