@@ -16,4 +16,9 @@ public class RsData<T> {
     private String massage;
 
     private T data;
+
+    public RsData(String statusCode, String massage) {
+        this.statusCode = statusCode;
+        this.massage = massage;
+    }
 }
