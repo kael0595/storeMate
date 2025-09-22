@@ -20,4 +20,23 @@ public class AuthService {
     public void logout(Member member) {
         refreshTokenRepository.deleteByMember(member);
     }
+
+    public String genRefreshToken(Member member) {
+
+        String tokenValue = UUID.randomUUID().toString();
+
+        RefreshToken refreshToken = new RefreshToken();
+        refreshToken.setMember(member);
+        refreshToken.setRefreshToken(tokenValue);
+        refreshToken.setExpiryDate(LocalDateTime.now().plusDays(7));
+        refreshTokenRepository.save(refreshToken);
+
+        return tokenValue;
+    }
+
+    public Member findMemberByToken(String token) {
+        RefreshToken refreshToken = refreshTokenRepository.findByRefreshToken(token)
+                .orElseThrow(() -> new RuntimeException("RefreshToken이 존재하지 않습니다."));
+        return refreshToken.getMember();
+    }
 }
