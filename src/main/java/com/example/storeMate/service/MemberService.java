@@ -53,4 +53,10 @@ public class MemberService {
     public Member findByUsername(String username) {
         return memberRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다."));
     }
+
+    public void deleteMember(Member member) {
+        member.setDeleted(true);
+        member.setDeletedAt(LocalDateTime.now());
+        memberRepository.save(member);
+    }
 }
