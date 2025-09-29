@@ -64,4 +64,29 @@ public class MemberController {
 
         return ResponseEntity.ok(new RsData<>("200", "회원탈퇴가 정상적으로 완료되었습니다."));
     }
+
+    @PutMapping("/me/changeProfile")
+    public ResponseEntity<RsData<MemberResponseDto>> changeProfile(@RequestHeader("Authorization") String authorizationHeader,
+                                                                   @RequestBody MemberRequestDto memberRequestDto) {
+
+        String token = authorizationHeader.replace("Bearer ", "");
+
+        String username = jwtProvider.getUsernameFromToken(token);
+
+        Member member = memberService.findByUsername(username);
+
+        memberService.changeProfile(member, memberRequestDto);
+
+        MemberResponseDto responseDto = new MemberResponseDto(
+                member.getUsername(),
+                member.getName(),
+                member.getEmail(),
+                member.getRole().getValue(),
+                member.getCreatedAt(),
+                member.getUpdatedAt()
+        );
+
+        return ResponseEntity.ok(new RsData<>("200", "회원정보 수정이 정상적으로 완료되었습니다.", responseDto));
+
+    }
 }
