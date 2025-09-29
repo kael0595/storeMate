@@ -2,6 +2,7 @@ package com.example.storeMate.service;
 
 import com.example.storeMate.base.exception.MemberException;
 import com.example.storeMate.base.repository.MemberRepository;
+import com.example.storeMate.domain.dto.ChangePasswordRequestDto;
 import com.example.storeMate.domain.dto.MemberRequestDto;
 import com.example.storeMate.domain.entity.Member;
 import com.example.storeMate.domain.entity.Role;
@@ -76,16 +77,17 @@ public class MemberService {
         member.setUpdatedAt(LocalDateTime.now());
         memberRepository.save(member);
     }
-    public void changePassword(MemberRequestDto memberRequestDto, Member member) {
-        if (memberRequestDto.getPassword() == null || memberRequestDto.getPassword().isBlank()) {
-            memberRequestDto.setPassword(member.getPassword());
-        } else {
-            if (passwordEncoder.matches(memberRequestDto.getPassword(), member.getPassword())) {
-                memberRequestDto.setPassword(member.getPassword());
-            } else {
-                member.setPassword(passwordEncoder.encode(memberRequestDto.getPassword()));
-            }
+
+    public void changePassword(ChangePasswordRequestDto changePasswordRequestDto, Member member) {
+        if (!passwordEncoder.matches(changePasswordRequestDto.getCurrentPassword(), member.getPassword())) {
+            throw new MemberException.WrongPassword("현재 비밀번호가 일치하지 않습니다.");
         }
+
+        if (!changePasswordRequestDto.getNewPassword().equals(changePasswordRequestDto.getNewPasswordCnf())) {
+            throw new RuntimeException("새 비밀번호와 확인용 비밀번호가 일치하지 않습니다.");
+        }
+
+        member.setPassword(passwordEncoder.encode(changePasswordRequestDto.getNewPassword()));
         memberRepository.save(member);
     }
 }
