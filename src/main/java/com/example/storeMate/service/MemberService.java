@@ -2,7 +2,7 @@ package com.example.storeMate.service;
 
 import com.example.storeMate.base.exception.MemberException;
 import com.example.storeMate.base.repository.MemberRepository;
-import com.example.storeMate.domain.dto.MemberDto;
+import com.example.storeMate.domain.dto.MemberRequestDto;
 import com.example.storeMate.domain.entity.Member;
 import com.example.storeMate.domain.entity.Role;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class MemberService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public Member register(MemberDto memberDto) {
+    public Member register(MemberRequestDto memberDto) {
 
         String rawPassword = passwordEncoder.encode(memberDto.getPassword());
 
