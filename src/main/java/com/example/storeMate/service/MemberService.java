@@ -1,6 +1,6 @@
 package com.example.storeMate.service;
 
-import com.example.storeMate.auth.repository.RefreshTokenRepository;
+import com.example.storeMate.base.exception.MemberException;
 import com.example.storeMate.base.repository.MemberRepository;
 import com.example.storeMate.domain.dto.MemberDto;
 import com.example.storeMate.domain.entity.Member;
@@ -41,17 +41,21 @@ public class MemberService {
     }
 
     public Member login(String username, String password) {
-        Member member = memberRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("회원이 존재하지 않습니다."));
+        Member member = memberRepository.findByUsername(username).orElseThrow(() -> new MemberException.NotFound("회원이 존재하지 않습니다."));
 
         if (!passwordEncoder.matches(password, member.getPassword())) {
-            throw new RuntimeException("비밀번호가 일치하지 않습니다.");
+            throw new MemberException.WrongPassword("비밀번호가 일치하지 않습니다.");
+        }
+
+        if (member.isDeleted()) {
+            throw new MemberException.Deleted("탈퇴한 회원입니다.");
         }
 
         return member;
     }
 
     public Member findByUsername(String username) {
-        return memberRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다."));
+        return memberRepository.findByUsername(username).orElseThrow(() -> new MemberException.NotFound("존재하지 않는 회원입니다."));
     }
 
     public void deleteMember(Member member) {
