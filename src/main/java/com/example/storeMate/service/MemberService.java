@@ -76,4 +76,16 @@ public class MemberService {
         member.setUpdatedAt(LocalDateTime.now());
         memberRepository.save(member);
     }
+    public void changePassword(MemberRequestDto memberRequestDto, Member member) {
+        if (memberRequestDto.getPassword() == null || memberRequestDto.getPassword().isBlank()) {
+            memberRequestDto.setPassword(member.getPassword());
+        } else {
+            if (passwordEncoder.matches(memberRequestDto.getPassword(), member.getPassword())) {
+                memberRequestDto.setPassword(member.getPassword());
+            } else {
+                member.setPassword(passwordEncoder.encode(memberRequestDto.getPassword()));
+            }
+        }
+        memberRepository.save(member);
+    }
 }
