@@ -65,7 +65,7 @@ public class MemberController {
         return ResponseEntity.ok(new RsData<>("200", "회원탈퇴가 정상적으로 완료되었습니다."));
     }
 
-    @PutMapping("/me/changeProfile")
+    @PatchMapping("/me/changeProfile")
     public ResponseEntity<RsData<MemberResponseDto>> changeProfile(@RequestHeader("Authorization") String authorizationHeader,
                                                                    @RequestBody MemberRequestDto memberRequestDto) {
 
@@ -89,7 +89,7 @@ public class MemberController {
         return ResponseEntity.ok(new RsData<>("200", "회원정보 수정이 정상적으로 완료되었습니다.", responseDto));
     }
 
-    @PutMapping("/me/changePassword")
+    @PatchMapping("/me/changePassword")
     public ResponseEntity<RsData<Void>> changePassword(@RequestHeader("Authorization") String authorizationHeader,
                                                        @RequestBody MemberRequestDto memberRequestDto) {
 
