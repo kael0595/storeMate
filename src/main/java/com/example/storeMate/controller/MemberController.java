@@ -2,7 +2,8 @@ package com.example.storeMate.controller;
 
 import com.example.storeMate.base.security.JwtProvider;
 import com.example.storeMate.base.util.rsData.RsData;
-import com.example.storeMate.domain.dto.MemberDto;
+import com.example.storeMate.domain.dto.MemberRequestDto;
+import com.example.storeMate.domain.dto.MemberResponseDto;
 import com.example.storeMate.domain.entity.Member;
 import com.example.storeMate.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +20,11 @@ public class MemberController {
     private final JwtProvider jwtProvider;
 
     @PostMapping("/register")
-    public ResponseEntity<RsData<MemberDto>> register(@RequestBody MemberDto memberDto) {
+    public ResponseEntity<RsData<MemberResponseDto>> register(@RequestBody MemberRequestDto memberRequestDto) {
 
-        Member member = memberService.register(memberDto);
+        Member member = memberService.register(memberRequestDto);
 
-        MemberDto responseDto = new MemberDto();
+        MemberResponseDto responseDto = new MemberResponseDto();
         responseDto.setUsername(member.getUsername());
         responseDto.setName(member.getName());
         responseDto.setEmail(member.getEmail());
@@ -33,7 +34,7 @@ public class MemberController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<RsData<MemberDto>> me(@RequestHeader("Authorization") String authorizationHeader) {
+    public ResponseEntity<RsData<MemberResponseDto>> me(@RequestHeader("Authorization") String authorizationHeader) {
 
         String token = authorizationHeader.replace("Bearer ", "");
 
@@ -41,16 +42,16 @@ public class MemberController {
 
         Member member = memberService.findByUsername(username);
 
-        MemberDto memberDto = new MemberDto();
-        memberDto.setUsername(member.getUsername());
-        memberDto.setEmail(member.getEmail());
-        memberDto.setName(member.getName());
-        memberDto.setRole(member.getRole().getValue());
+        MemberResponseDto memberResponseDto = new MemberResponseDto();
+        memberResponseDto.setUsername(member.getUsername());
+        memberResponseDto.setEmail(member.getEmail());
+        memberResponseDto.setName(member.getName());
+        memberResponseDto.setRole(member.getRole().getValue());
 
-        return ResponseEntity.ok(new RsData<>("200", "회원정보 조회에 성공하였습니다.", memberDto));
+        return ResponseEntity.ok(new RsData<>("200", "회원정보 조회에 성공하였습니다.", memberResponseDto));
     }
 
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     public ResponseEntity<RsData<Void>> deleteMember(@RequestHeader("Authorization") String authorizationHeader) {
 
         String token = authorizationHeader.replace("Bearer ", "");
