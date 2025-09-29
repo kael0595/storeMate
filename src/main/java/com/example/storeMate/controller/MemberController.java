@@ -87,6 +87,20 @@ public class MemberController {
         );
 
         return ResponseEntity.ok(new RsData<>("200", "회원정보 수정이 정상적으로 완료되었습니다.", responseDto));
+    }
 
+    @PutMapping("/me/changePassword")
+    public ResponseEntity<RsData<Void>> changePassword(@RequestHeader("Authorization") String authorizationHeader,
+                                                       @RequestBody MemberRequestDto memberRequestDto) {
+
+        String token = authorizationHeader.replace("Bearer ", "");
+
+        String username = jwtProvider.getUsernameFromToken(token);
+
+        Member member = memberService.findByUsername(username);
+
+        memberService.changePassword(memberRequestDto, member);
+
+        return ResponseEntity.ok().body(new RsData<>("200", "비밀번호가 정상적으로 수정되었습니다."));
     }
 }
