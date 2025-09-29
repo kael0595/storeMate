@@ -2,6 +2,7 @@ package com.example.storeMate.controller;
 
 import com.example.storeMate.base.security.JwtProvider;
 import com.example.storeMate.base.util.rsData.RsData;
+import com.example.storeMate.domain.dto.ChangePasswordRequestDto;
 import com.example.storeMate.domain.dto.MemberRequestDto;
 import com.example.storeMate.domain.dto.MemberResponseDto;
 import com.example.storeMate.domain.entity.Member;
@@ -91,7 +92,7 @@ public class MemberController {
 
     @PatchMapping("/me/changePassword")
     public ResponseEntity<RsData<Void>> changePassword(@RequestHeader("Authorization") String authorizationHeader,
-                                                       @RequestBody MemberRequestDto memberRequestDto) {
+                                                       @RequestBody ChangePasswordRequestDto changePasswordRequestDto) {
 
         String token = authorizationHeader.replace("Bearer ", "");
 
@@ -99,7 +100,7 @@ public class MemberController {
 
         Member member = memberService.findByUsername(username);
 
-        memberService.changePassword(memberRequestDto, member);
+        memberService.changePassword(changePasswordRequestDto, member);
 
         return ResponseEntity.ok().body(new RsData<>("200", "비밀번호가 정상적으로 수정되었습니다."));
     }
