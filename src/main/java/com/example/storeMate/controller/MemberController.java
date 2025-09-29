@@ -7,6 +7,7 @@ import com.example.storeMate.domain.dto.MemberRequestDto;
 import com.example.storeMate.domain.dto.MemberResponseDto;
 import com.example.storeMate.domain.entity.Member;
 import com.example.storeMate.service.MemberService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class MemberController {
     private final JwtProvider jwtProvider;
 
     @PostMapping("/register")
-    public ResponseEntity<RsData<MemberResponseDto>> register(@RequestBody MemberRequestDto memberRequestDto) {
+    public ResponseEntity<RsData<MemberResponseDto>> register(@RequestBody @Valid MemberRequestDto memberRequestDto) {
 
         Member member = memberService.register(memberRequestDto);
 
@@ -68,7 +69,7 @@ public class MemberController {
 
     @PatchMapping("/me/changeProfile")
     public ResponseEntity<RsData<MemberResponseDto>> changeProfile(@RequestHeader("Authorization") String authorizationHeader,
-                                                                   @RequestBody MemberRequestDto memberRequestDto) {
+                                                                   @RequestBody @Valid MemberRequestDto memberRequestDto) {
 
         String token = authorizationHeader.replace("Bearer ", "");
 
@@ -92,7 +93,7 @@ public class MemberController {
 
     @PatchMapping("/me/changePassword")
     public ResponseEntity<RsData<Void>> changePassword(@RequestHeader("Authorization") String authorizationHeader,
-                                                       @RequestBody ChangePasswordRequestDto changePasswordRequestDto) {
+                                                       @RequestBody @Valid ChangePasswordRequestDto changePasswordRequestDto) {
 
         String token = authorizationHeader.replace("Bearer ", "");
 
