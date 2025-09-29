@@ -63,4 +63,17 @@ public class MemberService {
         member.setDeletedAt(LocalDateTime.now());
         memberRepository.save(member);
     }
+
+    public void changeProfile(Member member, MemberRequestDto memberRequestDto) {
+        if (!memberRequestDto.getName().isBlank()) {
+            member.setName(memberRequestDto.getName());
+        }
+
+        if (!memberRequestDto.getEmail().isBlank()) {
+            member.setEmail(memberRequestDto.getEmail());
+        }
+
+        member.setUpdatedAt(LocalDateTime.now());
+        memberRepository.save(member);
+    }
 }
