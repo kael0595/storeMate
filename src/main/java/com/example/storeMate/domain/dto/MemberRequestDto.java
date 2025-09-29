@@ -3,7 +3,7 @@ package com.example.storeMate.domain.dto;
 import lombok.Data;
 
 @Data
-public class MemberDto {
+public class MemberRequestDto {
 
     private String username;
 
