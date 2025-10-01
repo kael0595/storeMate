@@ -32,7 +32,7 @@ public class MemberService {
                 .createdAt(LocalDateTime.now())
                 .build();
 
-        if (memberDto.getUsername().startsWith("admin")) {
+        if (memberRepository.count() == 0) {
             member.setRole(Role.ADMIN);
         } else {
             member.setRole(Role.USER);
