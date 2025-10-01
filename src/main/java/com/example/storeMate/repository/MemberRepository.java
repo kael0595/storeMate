@@ -1,4 +1,4 @@
-package com.example.storeMate.base.repository;
+package com.example.storeMate.repository;
 
 import com.example.storeMate.domain.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;

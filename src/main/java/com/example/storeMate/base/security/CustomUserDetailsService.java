@@ -1,6 +1,6 @@
 package com.example.storeMate.base.security;
 
-import com.example.storeMate.base.repository.MemberRepository;
+import com.example.storeMate.repository.MemberRepository;
 import com.example.storeMate.domain.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

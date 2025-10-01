@@ -1,7 +1,7 @@
 package com.example.storeMate.service;
 
 import com.example.storeMate.base.exception.MemberException;
-import com.example.storeMate.base.repository.MemberRepository;
+import com.example.storeMate.repository.MemberRepository;
 import com.example.storeMate.domain.dto.ChangePasswordRequestDto;
 import com.example.storeMate.domain.dto.MemberRequestDto;
 import com.example.storeMate.domain.entity.Member;
