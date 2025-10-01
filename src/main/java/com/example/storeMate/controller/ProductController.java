@@ -48,6 +48,7 @@ public class ProductController {
         productResponseDto.setStockQuantity(product.getStockQuantity());
         productResponseDto.setCategory(product.getCategory());
         productResponseDto.setBrand(product.getBrand());
+        productResponseDto.setStatus(product.getStatus());
         productResponseDto.setThumbnailImageUrl(product.getThumbnailImageUrl());
         productResponseDto.setImageUrls(product.getImageUrls());
         productResponseDto.setDiscountRate(product.getDiscountRate());
