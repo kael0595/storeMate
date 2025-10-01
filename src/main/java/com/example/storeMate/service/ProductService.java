@@ -37,4 +37,8 @@ public class ProductService {
 
         return productRepository.save(product);
     }
+
+    public Product findById(Long id) {
+        return productRepository.findById(id).orElseThrow(() -> new RuntimeException("상품을 찾을 수 없습니다."));
+    }
 }
