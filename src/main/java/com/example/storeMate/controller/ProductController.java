@@ -59,4 +59,27 @@ public class ProductController {
         return ResponseEntity.ok(new RsData<>("200", "상품이 정상적으로 등록되었습니다.", productResponseDto));
 
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<RsData<ProductResponseDto>> detail(@PathVariable("id") Long id) {
+
+        Product product = productService.findById(id);
+
+        ProductResponseDto productResponseDto = new ProductResponseDto();
+        productResponseDto.setName(product.getName());
+        productResponseDto.setDescription(product.getDescription());
+        productResponseDto.setPrice(product.getPrice());
+        productResponseDto.setStockQuantity(product.getStockQuantity());
+        productResponseDto.setCategory(product.getCategory());
+        productResponseDto.setBrand(product.getBrand());
+        productResponseDto.setStatus(product.getStatus());
+        productResponseDto.setThumbnailImageUrl(product.getThumbnailImageUrl());
+        productResponseDto.setImageUrls(product.getImageUrls());
+        productResponseDto.setDiscountRate(product.getDiscountRate());
+        productResponseDto.setDiscountPrice(product.getDiscountPrice());
+        productResponseDto.setNew(product.isNew());
+        productResponseDto.setBest(product.isBest());
+
+        return ResponseEntity.ok(new RsData<>("200", "상품 조회에 성공하였습니다.", productResponseDto));
+    }
 }
