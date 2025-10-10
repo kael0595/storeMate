@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -40,5 +41,9 @@ public class ProductService {
 
     public Product findById(Long id) {
         return productRepository.findById(id).orElseThrow(() -> new RuntimeException("상품을 찾을 수 없습니다."));
+    }
+
+    public List<Product> findAll() {
+        return productRepository.findAll();
     }
 }
