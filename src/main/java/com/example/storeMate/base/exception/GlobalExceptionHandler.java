@@ -26,4 +26,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(new RsData<>("403", e.getMessage()));
     }
+
+    @ExceptionHandler(ProductException.NotFound.class)
+    public ResponseEntity<RsData<Void>> handleNotFound(ProductException.NotFound e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new RsData<>("404", e.getMessage()));
+    }
 }
