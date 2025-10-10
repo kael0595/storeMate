@@ -14,6 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/products")
@@ -81,5 +84,34 @@ public class ProductController {
         productResponseDto.setBest(product.isBest());
 
         return ResponseEntity.ok(new RsData<>("200", "상품 조회에 성공하였습니다.", productResponseDto));
+    }
+
+    @GetMapping
+    public ResponseEntity<RsData<List<ProductResponseDto>>> productList() {
+
+        List<Product> productList = productService.findAll();
+
+        List<ProductResponseDto> productResponseDtoList = productList.stream()
+                .map(
+                        product -> {
+                            ProductResponseDto productResponseDto = new ProductResponseDto();
+                            productResponseDto.setId(product.getId());
+                            productResponseDto.setName(product.getName());
+                            productResponseDto.setPrice(product.getPrice());
+                            productResponseDto.setStockQuantity(product.getStockQuantity());
+                            productResponseDto.setStatus(product.getStatus());
+                            productResponseDto.setThumbnailImageUrl(product.getThumbnailImageUrl());
+                            productResponseDto.setImageUrls(product.getImageUrls());
+                            productResponseDto.setDescription(product.getDescription());
+                            productResponseDto.setBrand(product.getBrand());
+                            productResponseDto.setCategory(product.getCategory());
+                            productResponseDto.setDiscountPrice(product.getDiscountPrice());
+                            productResponseDto.setDiscountRate(product.getDiscountRate());
+                            productResponseDto.setNew(product.isNew());
+                            productResponseDto.setBest(product.isBest());
+                            return productResponseDto;
+                        })
+                .toList();
+        return ResponseEntity.ok(new RsData<>("200", "상품 목록이 정상적으로 출력되었습니다", productResponseDtoList));
     }
 }
