@@ -1,5 +1,6 @@
 package com.example.storeMate.service;
 
+import com.example.storeMate.base.exception.ProductException;
 import com.example.storeMate.domain.dto.ProductRequestDto;
 import com.example.storeMate.domain.entity.Product;
 import com.example.storeMate.repository.ProductRepository;
@@ -40,7 +41,7 @@ public class ProductService {
     }
 
     public Product findById(Long id) {
-        return productRepository.findById(id).orElseThrow(() -> new RuntimeException("상품을 찾을 수 없습니다."));
+        return productRepository.findById(id).orElseThrow(() -> new ProductException.NotFound("상품을 찾을 수 없습니다."));
     }
 
     public List<Product> findAll() {
