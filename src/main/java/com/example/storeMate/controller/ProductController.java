@@ -2,8 +2,8 @@ package com.example.storeMate.controller;
 
 import com.example.storeMate.auth.service.AuthService;
 import com.example.storeMate.base.exception.ProductException;
-import com.example.storeMate.base.security.JwtProvider;
 import com.example.storeMate.base.util.rsData.RsData;
+import com.example.storeMate.domain.dto.PageResponseDto;
 import com.example.storeMate.domain.dto.ProductRequestDto;
 import com.example.storeMate.domain.dto.ProductResponseDto;
 import com.example.storeMate.domain.entity.Member;
@@ -13,15 +13,20 @@ import com.example.storeMate.service.MemberService;
 import com.example.storeMate.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/products")
+@Slf4j
 public class ProductController {
 
     private final ProductService productService;
@@ -85,11 +90,15 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<RsData<List<ProductResponseDto>>> productList() {
+    public ResponseEntity<RsData<PageResponseDto>> productList(@RequestParam(value = "page", defaultValue = "1", required = false) int page,
+                                                               @RequestParam(value = "size", defaultValue = "5", required = false) int size,
+                                                               @RequestParam(value = "kw", defaultValue = "") String kw) {
 
-        List<Product> productList = productService.findAll();
+        Pageable pageable = PageRequest.of(page - 1, size, Sort.by("createdAt").descending());
 
-        List<ProductResponseDto> productResponseDtoList = productList.stream()
+        Page<Product> products = productService.findByKw(kw, pageable);
+
+        List<ProductResponseDto> content = products.getContent().stream()
                 .map(
                         product -> {
                             ProductResponseDto productResponseDto = new ProductResponseDto();
@@ -110,7 +119,16 @@ public class ProductController {
                             return productResponseDto;
                         })
                 .toList();
-        return ResponseEntity.ok(new RsData<>("200", "상품 목록이 정상적으로 출력되었습니다", productResponseDtoList));
+
+        PageResponseDto<ProductResponseDto> pageResponseDto = new PageResponseDto<>(
+                content,
+                products.getSize(),
+                products.getNumber() + 1,
+                products.getTotalElements(),
+                products.getTotalPages()
+        );
+
+        return ResponseEntity.ok(new RsData<>("200", "상품 목록이 정상적으로 출력되었습니다", pageResponseDto));
     }
 
     @PatchMapping("{id}")

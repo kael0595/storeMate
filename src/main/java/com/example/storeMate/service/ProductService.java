@@ -4,8 +4,10 @@ import com.example.storeMate.base.exception.ProductException;
 import com.example.storeMate.domain.dto.ProductRequestDto;
 import com.example.storeMate.domain.entity.Product;
 import com.example.storeMate.repository.ProductRepository;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -75,5 +77,26 @@ public class ProductService {
     public void deleteProduct(Product product) {
         product.setDeleted(true);
         productRepository.save(product);
+    }
+
+    public Page<Product> findByKw(String kw, Pageable pageable) {
+        return productRepository.findAll(search(kw), pageable);
+    }
+
+    private Specification<Product> search(String kw) {
+        return (root, query, cb) -> {
+            query.distinct(true);
+
+            if (kw == null || kw.isBlank()) {
+                return cb.conjunction(); // 검색어 없으면 전체 조회
+            }
+
+            return cb.or(
+                    cb.like(root.get("name"), "%" + kw + "%"),
+                    cb.like(root.get("description"), "%" + kw + "%"),
+                    cb.like(root.get("brand"), "%" + kw + "%"),
+                    cb.like(root.get("category"), "%" + kw + "%")
+            );
+        };
     }
 }
