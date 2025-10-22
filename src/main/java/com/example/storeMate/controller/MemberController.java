@@ -21,7 +21,7 @@ public class MemberController {
 
     private final JwtProvider jwtProvider;
 
-    @PostMapping("/register")
+    @PostMapping
     public ResponseEntity<RsData<MemberResponseDto>> register(@RequestBody @Valid MemberRequestDto memberRequestDto) {
 
         Member member = memberService.register(memberRequestDto);
@@ -67,7 +67,7 @@ public class MemberController {
         return ResponseEntity.ok(new RsData<>("200", "회원탈퇴가 정상적으로 완료되었습니다."));
     }
 
-    @PatchMapping("/me/changeProfile")
+    @PatchMapping("/me")
     public ResponseEntity<RsData<MemberResponseDto>> changeProfile(@RequestHeader("Authorization") String authorizationHeader,
                                                                    @RequestBody @Valid MemberRequestDto memberRequestDto) {
 
