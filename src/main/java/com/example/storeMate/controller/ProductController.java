@@ -150,6 +150,7 @@ public class ProductController {
         productResponseDto.setDiscountPrice(product.getDiscountPrice());
         productResponseDto.setNew(product.isNew());
         productResponseDto.setBest(product.isBest());
+        productResponseDto.setDeleted(product.isDeleted());
         productResponseDto.setCreatedAt(product.getCreatedAt());
         productResponseDto.setUpdatedAt(product.getUpdatedAt());
 
