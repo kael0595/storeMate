@@ -41,11 +41,7 @@ public class MemberController {
     @GetMapping("/me")
     public ResponseEntity<RsData<MemberResponseDto>> me(@RequestHeader("Authorization") String authorizationHeader) {
 
-        String token = authorizationHeader.replace("Bearer ", "");
-
-        String username = jwtProvider.getUsernameFromToken(token);
-
-        Member member = memberService.findByUsername(username);
+        Member member = authService.getMemberFromAuthorizationHeader(authorizationHeader);
 
         MemberResponseDto memberResponseDto = new MemberResponseDto();
         memberResponseDto.setUsername(member.getUsername());
@@ -59,11 +55,7 @@ public class MemberController {
     @DeleteMapping("/me")
     public ResponseEntity<RsData<Void>> deleteMember(@RequestHeader("Authorization") String authorizationHeader) {
 
-        String token = authorizationHeader.replace("Bearer ", "");
-
-        String username = jwtProvider.getUsernameFromToken(token);
-
-        Member member = memberService.findByUsername(username);
+        Member member = authService.getMemberFromAuthorizationHeader(authorizationHeader);
 
         memberService.deleteMember(member);
 
@@ -76,11 +68,7 @@ public class MemberController {
     public ResponseEntity<RsData<MemberResponseDto>> changeProfile(@RequestHeader("Authorization") String authorizationHeader,
                                                                    @RequestBody @Valid MemberRequestDto memberRequestDto) {
 
-        String token = authorizationHeader.replace("Bearer ", "");
-
-        String username = jwtProvider.getUsernameFromToken(token);
-
-        Member member = memberService.findByUsername(username);
+        Member member = authService.getMemberFromAuthorizationHeader(authorizationHeader);
 
         memberService.changeProfile(member, memberRequestDto);
 
@@ -100,11 +88,7 @@ public class MemberController {
     public ResponseEntity<RsData<Void>> changePassword(@RequestHeader("Authorization") String authorizationHeader,
                                                        @RequestBody @Valid ChangePasswordRequestDto changePasswordRequestDto) {
 
-        String token = authorizationHeader.replace("Bearer ", "");
-
-        String username = jwtProvider.getUsernameFromToken(token);
-
-        Member member = memberService.findByUsername(username);
+        Member member = authService.getMemberFromAuthorizationHeader(authorizationHeader);
 
         memberService.changePassword(changePasswordRequestDto, member);
 
