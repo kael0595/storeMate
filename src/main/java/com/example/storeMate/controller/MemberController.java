@@ -91,7 +91,7 @@ public class MemberController {
         return ResponseEntity.ok(new RsData<>("200", "회원정보 수정이 정상적으로 완료되었습니다.", responseDto));
     }
 
-    @PatchMapping("/me/changePassword")
+    @PatchMapping("/me/password")
     public ResponseEntity<RsData<Void>> changePassword(@RequestHeader("Authorization") String authorizationHeader,
                                                        @RequestBody @Valid ChangePasswordRequestDto changePasswordRequestDto) {
 
