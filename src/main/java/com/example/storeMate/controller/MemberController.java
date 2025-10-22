@@ -53,7 +53,7 @@ public class MemberController {
         return ResponseEntity.ok(new RsData<>("200", "회원정보 조회에 성공하였습니다.", memberResponseDto));
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/me")
     public ResponseEntity<RsData<Void>> deleteMember(@RequestHeader("Authorization") String authorizationHeader) {
 
         String token = authorizationHeader.replace("Bearer ", "");
