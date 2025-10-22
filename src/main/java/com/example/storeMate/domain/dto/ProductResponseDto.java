@@ -46,6 +46,8 @@ public class ProductResponseDto {
     @JsonProperty("isBest")
     private boolean isBest;
 
+    private boolean deleted;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
