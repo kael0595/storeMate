@@ -1,5 +1,6 @@
 package com.example.storeMate.controller;
 
+import com.example.storeMate.base.exception.ProductException;
 import com.example.storeMate.base.security.JwtProvider;
 import com.example.storeMate.base.util.rsData.RsData;
 import com.example.storeMate.domain.dto.ProductRequestDto;
@@ -39,7 +40,7 @@ public class ProductController {
         Member member = memberService.findByUsername(username);
 
         if (member.getRole() == Role.USER) {
-            throw new RuntimeException();
+            throw new ProductException.Forbidden("상품 등록 권한이 없습니다.");
         }
 
         Product product = productService.createProduct(productRequestDto);
@@ -114,4 +115,5 @@ public class ProductController {
                 .toList();
         return ResponseEntity.ok(new RsData<>("200", "상품 목록이 정상적으로 출력되었습니다", productResponseDtoList));
     }
+
 }
