@@ -35,6 +35,7 @@ public class ProductService {
                 .discountPrice(discountPrice)
                 .isNew(productRequestDto.isNew())
                 .isBest(productRequestDto.isBest())
+                .deleted(false)
                 .createdAt(LocalDateTime.now())
                 .build();
 
