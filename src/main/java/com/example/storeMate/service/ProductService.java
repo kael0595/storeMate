@@ -71,4 +71,9 @@ public class ProductService {
         product.setUpdatedAt(LocalDateTime.now());
         productRepository.save(product);
     }
+
+    public void deleteProduct(Product product) {
+        product.setDeleted(true);
+        productRepository.save(product);
+    }
 }

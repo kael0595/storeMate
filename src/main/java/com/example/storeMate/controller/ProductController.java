@@ -157,4 +157,25 @@ public class ProductController {
         return ResponseEntity.ok(new RsData<>("200", "상품 수정이 정상적으로 완료되었습니다.", productResponseDto));
 
     }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<RsData<Void>> deleteProduct(@PathVariable("id") Long id,
+                                                      @RequestHeader("Authorization") String authorizeHeader) {
+
+        String token = authorizeHeader.replace("Bearer ","");
+
+        String username = jwtProvider.getUsernameFromToken(token);
+
+        Member member = memberService.findByUsername(username);
+
+        Product product = productService.findById(id);
+
+        if (!member.getRole().getValue().equals("ROLE_ADMIN")) {
+            throw new ProductException.Forbidden("상품 삭제 권한이 없습니다.");
+        }
+
+        productService.deleteProduct(product);
+
+        return ResponseEntity.ok(new RsData<>("200", "상품 삭제가 정상적으로 완료되었습니다."));
+    }
 }
