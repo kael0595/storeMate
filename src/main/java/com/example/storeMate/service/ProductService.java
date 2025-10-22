@@ -4,6 +4,7 @@ import com.example.storeMate.base.exception.ProductException;
 import com.example.storeMate.domain.dto.ProductRequestDto;
 import com.example.storeMate.domain.entity.Product;
 import com.example.storeMate.repository.ProductRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -46,5 +47,27 @@ public class ProductService {
 
     public List<Product> findAll() {
         return productRepository.findAll();
+    }
+
+    public void updateProduct(Product product, ProductRequestDto productRequestDto) {
+
+        int discountPrice = productRequestDto.getPrice() * (100 - productRequestDto.getDiscountRate()) / 100;
+
+        product.setId(product.getId());
+        product.setName(productRequestDto.getName());
+        product.setDescription(productRequestDto.getDescription());
+        product.setPrice(productRequestDto.getPrice());
+        product.setStockQuantity(productRequestDto.getStockQuantity());
+        product.setStatus(productRequestDto.getStatus());
+        product.setCategory(productRequestDto.getCategory());
+        product.setBrand(productRequestDto.getBrand());
+        product.setThumbnailImageUrl(productRequestDto.getThumbnailImageUrl());
+        product.setImageUrls(productRequestDto.getImageUrls());
+        product.setDiscountRate(productRequestDto.getDiscountRate());
+        product.setDiscountPrice(discountPrice);
+        product.setNew(productRequestDto.isNew());
+        product.setBest(productRequestDto.isBest());
+        product.setUpdatedAt(LocalDateTime.now());
+        productRepository.save(product);
     }
 }

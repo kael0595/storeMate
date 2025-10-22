@@ -116,4 +116,44 @@ public class ProductController {
         return ResponseEntity.ok(new RsData<>("200", "상품 목록이 정상적으로 출력되었습니다", productResponseDtoList));
     }
 
+    @PatchMapping("{id}")
+    public ResponseEntity<RsData<ProductResponseDto>> updateProduct(@RequestBody @Valid ProductRequestDto productRequestDto,
+                                                                    @RequestHeader("Authorization") String authorizeHeader,
+                                                                    @PathVariable("id") Long id) {
+
+        String token = authorizeHeader.replace("Bearer ", "");
+
+        String username = jwtProvider.getUsernameFromToken(token);
+
+        Member member = memberService.findByUsername(username);
+
+        Product product = productService.findById(id);
+
+        if (!member.getRole().getValue().equals("ROLE_ADMIN")) {
+            throw new ProductException.Forbidden("상품 수정 권한이 없습니다.");
+        }
+
+        productService.updateProduct(product, productRequestDto);
+
+        ProductResponseDto productResponseDto = new ProductResponseDto();
+        productResponseDto.setId(product.getId());
+        productResponseDto.setName(product.getName());
+        productResponseDto.setDescription(product.getDescription());
+        productResponseDto.setPrice(product.getPrice());
+        productResponseDto.setStockQuantity(product.getStockQuantity());
+        productResponseDto.setStatus(product.getStatus());
+        productResponseDto.setCategory(product.getCategory());
+        productResponseDto.setBrand(product.getBrand());
+        productResponseDto.setThumbnailImageUrl(product.getThumbnailImageUrl());
+        productResponseDto.setImageUrls(product.getImageUrls());
+        productResponseDto.setDiscountRate(product.getDiscountRate());
+        productResponseDto.setDiscountPrice(product.getDiscountPrice());
+        productResponseDto.setNew(product.isNew());
+        productResponseDto.setBest(product.isBest());
+        productResponseDto.setCreatedAt(product.getCreatedAt());
+        productResponseDto.setUpdatedAt(product.getUpdatedAt());
+
+        return ResponseEntity.ok(new RsData<>("200", "상품 수정이 정상적으로 완료되었습니다.", productResponseDto));
+
+    }
 }
