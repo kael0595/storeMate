@@ -1,5 +1,6 @@
 package com.example.storeMate.controller;
 
+import com.example.storeMate.auth.service.AuthService;
 import com.example.storeMate.base.security.JwtProvider;
 import com.example.storeMate.base.util.rsData.RsData;
 import com.example.storeMate.domain.dto.ChangePasswordRequestDto;
@@ -20,6 +21,8 @@ public class MemberController {
     private final MemberService memberService;
 
     private final JwtProvider jwtProvider;
+
+    private final AuthService authService;
 
     @PostMapping
     public ResponseEntity<RsData<MemberResponseDto>> register(@RequestBody @Valid MemberRequestDto memberRequestDto) {
@@ -63,6 +66,8 @@ public class MemberController {
         Member member = memberService.findByUsername(username);
 
         memberService.deleteMember(member);
+
+        authService.logout(member);
 
         return ResponseEntity.ok(new RsData<>("200", "회원탈퇴가 정상적으로 완료되었습니다."));
     }
