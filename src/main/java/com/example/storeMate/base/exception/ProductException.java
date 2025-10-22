@@ -11,4 +11,11 @@ public class ProductException extends RuntimeException {
         super(message);
       }
     }
+
+    public static class Forbidden extends ProductException {
+
+        public Forbidden(String massage) {
+            super(massage);
+        }
+    }
 }
