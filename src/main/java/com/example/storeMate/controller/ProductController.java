@@ -1,5 +1,6 @@
 package com.example.storeMate.controller;
 
+import com.example.storeMate.auth.service.AuthService;
 import com.example.storeMate.base.exception.ProductException;
 import com.example.storeMate.base.security.JwtProvider;
 import com.example.storeMate.base.util.rsData.RsData;
@@ -27,17 +28,13 @@ public class ProductController {
 
     private final MemberService memberService;
 
-    private final JwtProvider jwtProvider;
+    private final AuthService authService;
 
     @PostMapping
     public ResponseEntity<RsData<ProductResponseDto>> createProduct(@RequestBody @Valid ProductRequestDto productRequestDto,
-                                                                    @RequestHeader("Authorization") String authorizationHeader) {
+                                                                    @RequestHeader("Authorization") String authorizeHeader) {
 
-        String token = authorizationHeader.replace("Bearer ", "");
-
-        String username = jwtProvider.getUsernameFromToken(token);
-
-        Member member = memberService.findByUsername(username);
+        Member member = authService.getMemberFromAuthorizationHeader(authorizeHeader);
 
         if (member.getRole() == Role.USER) {
             throw new ProductException.Forbidden("상품 등록 권한이 없습니다.");
@@ -121,11 +118,7 @@ public class ProductController {
                                                                     @RequestHeader("Authorization") String authorizeHeader,
                                                                     @PathVariable("id") Long id) {
 
-        String token = authorizeHeader.replace("Bearer ", "");
-
-        String username = jwtProvider.getUsernameFromToken(token);
-
-        Member member = memberService.findByUsername(username);
+        Member member = authService.getMemberFromAuthorizationHeader(authorizeHeader);
 
         Product product = productService.findById(id);
 
@@ -162,11 +155,7 @@ public class ProductController {
     public ResponseEntity<RsData<Void>> deleteProduct(@PathVariable("id") Long id,
                                                       @RequestHeader("Authorization") String authorizeHeader) {
 
-        String token = authorizeHeader.replace("Bearer ","");
-
-        String username = jwtProvider.getUsernameFromToken(token);
-
-        Member member = memberService.findByUsername(username);
+        Member member = authService.getMemberFromAuthorizationHeader(authorizeHeader);
 
         Product product = productService.findById(id);
 

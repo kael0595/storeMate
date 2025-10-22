@@ -1,7 +1,6 @@
 package com.example.storeMate.controller;
 
 import com.example.storeMate.auth.service.AuthService;
-import com.example.storeMate.base.security.JwtProvider;
 import com.example.storeMate.base.util.rsData.RsData;
 import com.example.storeMate.domain.dto.ChangePasswordRequestDto;
 import com.example.storeMate.domain.dto.MemberRequestDto;
@@ -19,8 +18,6 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final MemberService memberService;
-
-    private final JwtProvider jwtProvider;
 
     private final AuthService authService;
 

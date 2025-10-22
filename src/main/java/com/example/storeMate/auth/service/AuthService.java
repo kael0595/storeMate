@@ -47,7 +47,6 @@ public class AuthService {
         return refreshToken.getMember();
     }
 
-
     public Member getMemberFromAuthorizationHeader(String authorizationHeader) {
 
         String token = authorizationHeader.replace("Bearer ", "");
