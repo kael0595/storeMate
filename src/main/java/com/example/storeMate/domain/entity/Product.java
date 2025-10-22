@@ -61,6 +61,9 @@ public class Product {
     @Column(nullable = false)
     private boolean isBest;
 
+    @Column(nullable = false)
+    private boolean deleted;
+
     @CreatedDate
     private LocalDateTime createdAt;
 
