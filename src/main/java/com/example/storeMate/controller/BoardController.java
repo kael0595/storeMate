@@ -1,0 +1,50 @@
+package com.example.storeMate.controller;
+
+import com.example.storeMate.auth.service.AuthService;
+import com.example.storeMate.base.exception.BoardException;
+import com.example.storeMate.base.util.rsData.RsData;
+import com.example.storeMate.domain.dto.BoardRequestDto;
+import com.example.storeMate.domain.dto.BoardResponseDto;
+import com.example.storeMate.domain.entity.Board;
+import com.example.storeMate.domain.entity.Member;
+import com.example.storeMate.domain.entity.Role;
+import com.example.storeMate.service.BoardService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/boards")
+public class BoardController {
+
+    private final BoardService boardService;
+
+    private final AuthService authService;
+
+    @PostMapping
+    public ResponseEntity<RsData<BoardResponseDto>> createBoard(@RequestBody @Valid BoardRequestDto boardRequestDto,
+                                                                @RequestHeader("Authorization") String authorizeHeader) {
+
+        Member member = authService.getMemberFromAuthorizationHeader(authorizeHeader);
+
+        if (member.getRole() == Role.USER) {
+            throw new BoardException.Forbidden("게시판 생성 권한이 없습니다.");
+        }
+
+        Board board = boardService.createBoard(boardRequestDto);
+
+        BoardResponseDto boardResponseDto = new BoardResponseDto();
+        boardResponseDto.setId(board.getId());
+        boardResponseDto.setName(board.getName());
+        boardResponseDto.setDescription(board.getDescription());
+        boardResponseDto.setBoardType(board.getBoardType());
+        boardResponseDto.setActive(board.isActive());
+        boardResponseDto.setCreatedAt(board.getCreatedAt());
+
+        return ResponseEntity.ok(new RsData<>("200", "게시판이 정상적으로 생성되었습니다.", boardResponseDto));
+
+    }
+
+}
