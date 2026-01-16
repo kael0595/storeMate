@@ -80,7 +80,7 @@ public class BoardController {
         Board board = boardService.findById(id);
 
         if (!member.getRole().getValue().equals("ROLE_ADMIN")) {
-            throw new BoardException.Forbidden("수정 권한이 없습니다.");
+            throw new BoardException.Forbidden("게시판 수정 권한이 없습니다.");
         }
 
         boardService.updateBoard(board, boardRequestDto);
