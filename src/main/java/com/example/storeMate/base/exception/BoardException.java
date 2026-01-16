@@ -11,4 +11,11 @@ public class BoardException extends RuntimeException {
             super(massage);
         }
     }
+
+    public static class NotFound extends BoardException {
+
+        public NotFound(String massage) {
+            super(massage);
+        }
+    }
 }
