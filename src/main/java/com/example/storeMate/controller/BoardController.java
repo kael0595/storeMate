@@ -97,4 +97,20 @@ public class BoardController {
         return ResponseEntity.ok(new RsData<BoardResponseDto>("200", "정상적으로 게시판을 수정하였습니다.", boardResponseDto));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<RsData<BoardResponseDto>> deleteBoard(@PathVariable("id") Long id,
+                                                                @RequestHeader("Authorization") String authorizeHeader) {
+
+        Member member = authService.getMemberFromAuthorizationHeader(authorizeHeader);
+
+        Board board = boardService.findById(id);
+
+        if (!member.getRole().getValue().equals("ROLE_ADMIN")) {
+            throw new BoardException.Forbidden("게시판 삭제 권한이 없습니다.");
+        }
+
+        boardService.deleteBoard(board);
+
+        return ResponseEntity.ok(new RsData<>("200", "정상적으로 게시판을 삭제하였습니다."));
+    }
 }

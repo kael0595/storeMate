@@ -45,4 +45,9 @@ public class BoardService {
         board.setUpdatedAt(LocalDateTime.now());
         boardRepository.save(board);
     }
+
+    public void deleteBoard(Board board) {
+        board.setActive(false);
+        boardRepository.save(board);
+    }
 }
