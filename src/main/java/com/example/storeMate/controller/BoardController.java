@@ -70,4 +70,31 @@ public class BoardController {
         return ResponseEntity.ok(new RsData<List<BoardResponseDto>>("200", "게시글 목록이 정상적으로 조회되었습니다.", boardResponseDtoList));
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<RsData<BoardResponseDto>> BoardUpdate(@PathVariable("id") Long id,
+                                                                @Valid @RequestBody BoardRequestDto boardRequestDto,
+                                                                @RequestHeader("Authorization") String authorizeHeader) {
+
+        Member member = authService.getMemberFromAuthorizationHeader(authorizeHeader);
+
+        Board board = boardService.findById(id);
+
+        if (!member.getRole().getValue().equals("ROLE_ADMIN")) {
+            throw new BoardException.Forbidden("수정 권한이 없습니다.");
+        }
+
+        boardService.updateBoard(board, boardRequestDto);
+
+        BoardResponseDto boardResponseDto = new BoardResponseDto();
+        boardResponseDto.setId(board.getId());
+        boardResponseDto.setName(board.getName());
+        boardResponseDto.setBoardType(board.getBoardType());
+        boardResponseDto.setActive(board.isActive());
+        boardResponseDto.setCreatedAt(board.getCreatedAt());
+        boardResponseDto.setUpdatedAt(board.getUpdatedAt());
+        boardResponseDto.setDescription(board.getDescription());
+
+        return ResponseEntity.ok(new RsData<BoardResponseDto>("200", "정상적으로 게시판을 수정하였습니다.", boardResponseDto));
+    }
+
 }
