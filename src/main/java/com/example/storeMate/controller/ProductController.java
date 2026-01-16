@@ -9,7 +9,6 @@ import com.example.storeMate.domain.dto.ProductResponseDto;
 import com.example.storeMate.domain.entity.Member;
 import com.example.storeMate.domain.entity.Product;
 import com.example.storeMate.domain.entity.Role;
-import com.example.storeMate.service.MemberService;
 import com.example.storeMate.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,8 +29,6 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
-
-    private final MemberService memberService;
 
     private final AuthService authService;
 

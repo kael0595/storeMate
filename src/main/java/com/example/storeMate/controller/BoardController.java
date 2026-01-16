@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/boards")
@@ -45,6 +47,27 @@ public class BoardController {
 
         return ResponseEntity.ok(new RsData<>("200", "게시판이 정상적으로 생성되었습니다.", boardResponseDto));
 
+    }
+
+    @GetMapping
+    public ResponseEntity<RsData<List<BoardResponseDto>>> boardList() {
+
+        List<Board> boardList = boardService.findAll();
+
+        List<BoardResponseDto> boardResponseDtoList = boardList.stream()
+                .map(
+                        board -> new BoardResponseDto(
+                                board.getId(),
+                                board.getName(),
+                                board.getDescription(),
+                                board.getBoardType(),
+                                board.isActive(),
+                                board.getCreatedAt(),
+                                board.getUpdatedAt()
+                        )
+                ).toList();
+
+        return ResponseEntity.ok(new RsData<List<BoardResponseDto>>("200", "게시글 목록이 정상적으로 조회되었습니다.", boardResponseDtoList));
     }
 
 }
