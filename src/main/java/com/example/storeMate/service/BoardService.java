@@ -43,5 +43,6 @@ public class BoardService {
         board.setActive(boardRequestDto.isActive());
         board.setCreatedAt(board.getCreatedAt());
         board.setUpdatedAt(LocalDateTime.now());
+        boardRepository.save(board);
     }
 }
