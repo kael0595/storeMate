@@ -30,8 +30,8 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/api/products", "/api/products/**", "/api/boards", "/api/boards/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/members").permitAll()
-                        .requestMatchers(HttpMethod.PATCH, "/api/members/**", "/api/boards/**").authenticated()
-                        .requestMatchers(HttpMethod.PATCH, "/api/products/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/api/members/**").authenticated()
+                        .requestMatchers(HttpMethod.PATCH, "/api/products/**", "/api/boards/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/products/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/members/**", "/api/products/**", "/api/boards/**").authenticated()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
